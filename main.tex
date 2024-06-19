@@ -1,0 +1,158 @@
+\documentclass[12pt,a4paper,oneside]{book}
+\usepackage[utf8]{inputenc}
+\usepackage{mathptmx} % Times New Roman (approximated)
+\usepackage{setspace} % Line spacing
+\usepackage{parskip} % Paragraph configuration
+\usepackage{indentfirst}
+\usepackage{geometry} % Marging configuration
+\usepackage{titling} % Call author name and title
+\usepackage{emptypage} % Prevents page numbers and headings from appearing on empty pages.
+\usepackage{ragged2e} % Left and right alignment
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{graphicx}
+\usepackage[algoruled, english, linesnumbered]{algorithm2e}  % Algoritmos em português
+\usepackage[hidelinks]{hyperref} % Hyperlinks
+\usepackage[round,colon,sort]{natbib}
+\usepackage[nottoc,notlot,notlof]{tocbibind} % Includes "References" in the table of contents
+\usepackage{amsmath, amssymb, amsfonts, amsthm, mathtools}
+\usepackage{enumitem}
+\usepackage{bm}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage{mathrsfs} % Math font
+\usepackage{lscape} % Horizontal pages
+\usepackage{booktabs} % Lines for tables
+\usepackage{csvsimple}
+\usepackage{pdfpages}
+
+%\usepackage{mathabx}
+\usepackage{multirow}
+\usepackage{setspace}
+\usepackage{icomma}                 % Uso de vírgulas em expressões matemáticas
+\usepackage{listings}
+\usepackage[font=itshape]{quoting}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\fancypagestyle{plain}{%
+	\fancyhf{}%
+	\fancyhead[R]{\thepage}%
+}
+\renewcommand{\headrulewidth}{0pt}
+\usepackage{makecell}
+
+
+\onehalfspacing
+\geometry{left=3cm, top=3cm, bottom=2cm, right=2cm}
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0cm}
+\renewcommand\contentsname{Summary}
+\newtheorem{theorem}{Theorem} %[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{result}[theorem]{Result}
+\newtheorem{definition}[theorem]{Definition}
+
+\usepackage{blindtext}
+
+\newcommand{\brho}{\boldsymbol{\rho}}
+\newcommand{\brhop}{\boldsymbol{\rho^\prime}}
+
+\title{Surrogate-Assisted Algorithms for Microwave Imaging}
+\author{André Costa Batista}
+
+\begin{document}
+
+    % \frontmatter
+    \pagenumbering{gobble}
+    
+    \begin{titlepage}
+
+        % Cover
+        \begin{center}
+            \begin{spacing}{1}
+                UNIVERSIDADE FEDERAL DE MINAS GERAIS \\
+                School of Engineering \\
+                Graduate Program in Electrical Engineering
+            \end{spacing}
+            \vspace{5cm}
+            \theauthor \\
+            \vspace{5cm}
+            \textbf{\MakeUppercase\thetitle}\\
+            \vspace*{\fill}
+            Belo Horizonte\\2023
+        \end{center}
+
+	\end{titlepage}
+
+    % Folha de rosto
+	\newpage
+	% \mainmatter
+	\thispagestyle{empty}
+	\begin{center}
+		\theauthor\\
+		\vspace{5cm}
+		\textbf{\thetitle}
+	\end{center}
+	\vspace{5cm}
+	\hfill
+	\begin{minipage}{8cm}
+		Thesis presented to the Graduate Program in Electrical Engineering at the Federal University of Minas Gerais as a partial requirement to obtain the title of Doctor in Electrical Engineering.\\[3mm]
+		Supervisor: Prof. Dr. Lucas de Souza Batista \\[3mm]
+		Co-supervisor: Prof. Dr. Ricardo Luiz da Silva Adriano
+	\end{minipage}\\
+	\begin{center}
+		\vspace*{\fill}
+		Belo Horizonte\\2023
+	\end{center}
+
+    \includepdf{fichacatalografica}
+
+    % Você precisará especificar as páginas.
+    \includepdf[pages={1-2}]{atadefesa}
+
+    % Dedicatória
+    \include{./pretextuais/dedicatoria}
+
+    % Dedicatória
+	\include{./pretextuais/acknowledgements}
+
+    % Epígrafe
+    \include{./pretextuais/epigrafe}
+
+	\include{./pretextuais/resumo}
+    \include{./pretextuais/abstract}
+    
+
+	\begingroup
+		\pagestyle{empty}
+		\listoffigures
+		\pagestyle{empty}
+		\listoftables
+		\pagestyle{empty}
+		\listofalgorithms
+	\endgroup
+	
+	\include{./pretextuais/abbreviations}
+    
+    \thispagestyle{empty}
+    \tableofcontents
+
+    \include{./textuais/introduction}
+    \include{./textuais/problem-statement}
+    \include{./textuais/methods-overview}
+    \include{./textuais/proposed-methodology}
+    \include{./textuais/results}
+    \include{./textuais/conclusion}
+
+    \bibliographystyle{apalike}
+    \bibliography{mybib}
+    
+    \appendix
+    \include{./postextuais/appendix}
+
+
+\end{document}

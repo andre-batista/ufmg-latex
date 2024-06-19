@@ -1,0 +1,968 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{imsa}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k+kn}{import} \PY{n}{pyplot} \PY{k}{as} \PY{n}{plt}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{clustering-procedure}{%
+\section{Clustering Procedure}\label{clustering-procedure}}
+
+This notebooks is an attempt to implement the clustering procedure
+defined by \emph{Caorsi et a. (2004)}. The example illustrated in the
+paper is addressed in order to replicate what was obtained in the
+figures.
+
+Firstly, it will be define a routine to return indexes of the neighbors
+cells for a given one. This is a quick shortcut in order to make the
+code cleaner. The neighborhood structure may be define as 4 cells (left,
+right, top, and bottom) and 8 cells (northwest, northeast, soultheast,
+soulthwest).
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{neighbors}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{,} \PY{n}{I}\PY{p}{,} \PY{n}{J}\PY{p}{,} \PY{n}{neighbors}\PY{o}{=}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{:}
+    
+    \PY{k}{if} \PY{n}{neighbors} \PY{o}{==} \PY{l+m+mi}{4}\PY{p}{:}
+        \PY{n}{possible\PYZus{}i} \PY{o}{=} \PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,}   \PY{n}{i}\PY{p}{,}   \PY{n}{i}\PY{p}{]}
+        \PY{n}{possible\PYZus{}j} \PY{o}{=} \PY{p}{[}\PY{n}{j}\PY{p}{,}     \PY{n}{j}\PY{p}{,} \PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{j}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}
+    \PY{k}{elif} \PY{n}{neighbors} \PY{o}{==} \PY{l+m+mi}{8}\PY{p}{:}
+        \PY{n}{possible\PYZus{}i} \PY{o}{=} \PY{p}{[}\PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}   \PY{n}{i}\PY{p}{,}   \PY{n}{i}\PY{p}{,} \PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{i}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}
+        \PY{n}{possible\PYZus{}j} \PY{o}{=} \PY{p}{[}\PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}   \PY{n}{j}\PY{p}{,} \PY{n}{j}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{j}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{j}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}   \PY{n}{j}\PY{p}{,} \PY{n}{j}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{]}
+
+    \PY{n}{ilist}\PY{p}{,} \PY{n}{jlist} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{p}{]}
+    \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{possible\PYZus{}i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n}{possible\PYZus{}i}\PY{p}{[}\PY{n}{n}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{l+m+mi}{0} \PY{o+ow}{or} \PY{n}{possible\PYZus{}i}\PY{p}{[}\PY{n}{n}\PY{p}{]} \PY{o}{==} \PY{n}{I} \PY{o+ow}{or} \PY{n}{possible\PYZus{}j}\PY{p}{[}\PY{n}{n}\PY{p}{]} \PY{o}{\PYZlt{}} \PY{l+m+mi}{0} \PY{o+ow}{or} \PY{n}{possible\PYZus{}j}\PY{p}{[}\PY{n}{n}\PY{p}{]} \PY{o}{==} \PY{n}{J}\PY{p}{:}
+            \PY{k}{pass}
+        \PY{k}{else}\PY{p}{:}
+            \PY{n}{ilist}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{possible\PYZus{}i}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{)}
+            \PY{n}{jlist}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{possible\PYZus{}j}\PY{p}{[}\PY{n}{n}\PY{p}{]}\PY{p}{)}
+    \PY{k}{return} \PY{n}{ilist}\PY{p}{,} \PY{n}{jlist}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{image-definition}{%
+\subsection{Image Definition}\label{image-definition}}
+
+The Figures 2(a) and 2(b) are replicated in the next code. Actually,
+there is a slight different in some values, as one may note in the
+histogram. We have tried to obtain the same histogram curve, but it was
+not accomplished. We decided to define the image in order to obtain the
+same minimum value, which will be used as threshold level. Therefore, we
+define it to at least obtain the same image after thresholding.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Image array}
+\PY{n}{image} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                  \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{02}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}  \PY{l+m+mf}{0.2}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                  \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{04}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{05}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{45}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{56}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                  \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}   \PY{o}{.}\PY{l+m+mi}{1}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{56}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{16}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{55}\PY{p}{,}  \PY{l+m+mf}{0.2}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                  \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{08}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{05}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{56}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{56}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{45}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                  \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}  \PY{l+m+mf}{0.1}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{02}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{08}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{02}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{08}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                  \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{45}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{58}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{58}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{02}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{08}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                  \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}   \PY{o}{.}\PY{l+m+mi}{2}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{58}\PY{p}{,}  \PY{l+m+mf}{0.2}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{58}\PY{p}{,}  \PY{l+m+mf}{0.1}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                  \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}  \PY{o}{.}\PY{l+m+mi}{58}\PY{p}{,}   \PY{o}{.}\PY{l+m+mi}{4}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                  \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}   \PY{o}{.}\PY{l+m+mi}{2}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+                  \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Figures objects}
+\PY{n}{fig}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{nrows}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{ncols}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{14}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Image plot}
+\PY{n}{gray} \PY{o}{=} \PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{image}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{vmin}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{vmax}\PY{o}{=}\PY{o}{.}\PY{l+m+mi}{6}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{n}{gray}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Histogram plot}
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{hist}\PY{p}{(}\PY{n}{image}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+             \PY{n}{bins}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{05}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{15}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{2}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{25}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{3}\PY{p}{,}
+                   \PY{o}{.}\PY{l+m+mi}{35}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{4}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{45}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{5}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{55}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{6}\PY{p}{]}\PY{p}{,}
+             \PY{n}{align}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{left}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_4_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{thresholding}{%
+\subsection{Thresholding}\label{thresholding}}
+
+The threshold level is therefore the argument for the minimum value of
+the histogram of the image. It is expectable by the authors that the
+histogram will have a convex shape. We are implementing by sorting the
+histogram. So there may be bins with the same occurrence level. In this
+case, the least one will be chosen.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Histogram}
+\PY{n}{hist}\PY{p}{,} \PY{n}{bins} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{histogram}\PY{p}{(}\PY{n}{image}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{p}{)}\PY{p}{,}
+                          \PY{n}{bins}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{05}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{15}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{2}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{25}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{3}\PY{p}{,}
+                                \PY{o}{.}\PY{l+m+mi}{35}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{4}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{45}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{5}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{55}\PY{p}{,} \PY{o}{.}\PY{l+m+mi}{6}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} Compute the threshold level}
+\PY{n}{T} \PY{o}{=} \PY{n}{bins}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{argsort}\PY{p}{(}\PY{n}{hist}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}
+
+\PY{c+c1}{\PYZsh{} Apply thresholding}
+\PY{n}{image}\PY{p}{[}\PY{n}{image} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{T}\PY{p}{]} \PY{o}{=} \PY{l+m+mf}{1.}
+\PY{n}{image}\PY{p}{[}\PY{n}{image} \PY{o}{\PYZlt{}} \PY{n}{T}\PY{p}{]} \PY{o}{=} \PY{l+m+mf}{0.}
+
+\PY{c+c1}{\PYZsh{} Plot the resultant figure}
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{image}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_6_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    The same figure as in 2(c) is obtained
+
+\hypertarget{noise-filtering}{%
+\subsection{Noise Filtering}\label{noise-filtering}}
+
+This step is defined as follows in the paper:
+
+"\emph{Successively, a noise filtering is performed to eliminate some
+artifacts. The scatteres' support is clearly define by means of the
+following transformation:}
+
+\[ \tau_{dn} = \begin{cases} \tau_0, ~\mathrm{if}~ N_0 > N_{max}, \\ \tau_{max}, ~\mathrm{if}~ N_0 \leq N_{max} \\ \tau_{th}(x_{n(r)}, y_{n(r)}), ~\mathrm{elsewhere}~ \end{cases} \]
+
+\emph{where (\(x_j, y_j\)) indicates a neighboring position, \(N_p\) is
+the dimension of the complete neighborhood system of the sub-domain
+located at (\(x_{n(r)}\), \(y_{n(r)}\)), \(N_0\) indicates the number of
+pixels of the neighborhood for which \(\tau_{th}(x_j, y_j) = \tau_0\),
+and \(N_{max}\) indicates the number of pixels of the neighborhood for
+which \(\tau_{th}(x_j, y_j) = \tau_{max}\).}"
+
+There are a couple of things which are not clear:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  When does the \emph{elsewhere} case happen?
+\item
+  Are the pixels updated at the same time or sequentailly following some
+  order?
+\end{enumerate}
+
+The result in the figure 2(d) show that the middle points are converted
+to black by means of this algorithm. We are going to get this in
+different ways. In all of them, we are neglecting the \emph{elsewhere}
+case since we do not know when this happen.
+
+\hypertarget{parallel-update}{%
+\subsubsection{Parallel Update}\label{parallel-update}}
+
+In this manner, we firstly compute \(N_0\) and \(N_{max}\) for each cell
+without applying the rule and then we are apply the rule. The result is
+below:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{NY}\PY{p}{,} \PY{n}{NX} \PY{o}{=} \PY{n}{image}\PY{o}{.}\PY{n}{shape}
+\PY{n}{image2} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{image}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Compute N0 and NMAX for each cell}
+\PY{n}{N0}\PY{p}{,} \PY{n}{NMAX} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{NY}\PY{p}{,} \PY{n}{NX}\PY{p}{)}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{NY}\PY{p}{,} \PY{n}{NX}\PY{p}{)}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NX}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NY}\PY{p}{)}\PY{p}{:}
+        \PY{n}{m}\PY{p}{,} \PY{n}{n} \PY{o}{=} \PY{n}{neighbors}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{,} \PY{n}{NX}\PY{p}{,} \PY{n}{NY}\PY{p}{)}
+        \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{image2}\PY{p}{[}\PY{n}{n}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{,} \PY{n}{m}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                \PY{n}{N0}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{NMAX}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{c+c1}{\PYZsh{} Apply the rule}
+\PY{n}{image2}\PY{p}{[}\PY{n}{N0} \PY{o}{\PYZgt{}} \PY{n}{NMAX}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+\PY{n}{image2}\PY{p}{[}\PY{n}{N0} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{NMAX}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{image2}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{sequential-update}{%
+\subsubsection{Sequential update}\label{sequential-update}}
+
+Another way is to update sequentially the cells. Starting from top to
+bottom, left to right, the cells are updated sequentially. This may give
+a different result.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{image3} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{image}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NX}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NY}\PY{p}{)}\PY{p}{:}
+        \PY{n}{N0}\PY{p}{,} \PY{n}{NMAX} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}
+        \PY{n}{m}\PY{p}{,} \PY{n}{n} \PY{o}{=} \PY{n}{neighbors}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{,} \PY{n}{NX}\PY{p}{,} \PY{n}{NY}\PY{p}{)}
+        \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{image3}\PY{p}{[}\PY{n}{n}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{,} \PY{n}{m}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                \PY{n}{N0} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{NMAX} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+        \PY{k}{if} \PY{n}{N0} \PY{o}{\PYZgt{}} \PY{n}{NMAX}\PY{p}{:}
+            \PY{n}{image3}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+        \PY{k}{elif} \PY{n}{NMAX} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{N0}\PY{p}{:}
+            \PY{n}{image3}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{image3}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    We may change the order to left-right, top-bottom\ldots{}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{image4} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{image}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NY}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NX}\PY{p}{)}\PY{p}{:}
+        \PY{n}{N0}\PY{p}{,} \PY{n}{NMAX} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}
+        \PY{n}{m}\PY{p}{,} \PY{n}{n} \PY{o}{=} \PY{n}{neighbors}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{,} \PY{n}{NX}\PY{p}{,} \PY{n}{NY}\PY{p}{)}
+        \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{image4}\PY{p}{[}\PY{n}{n}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{,} \PY{n}{m}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                \PY{n}{N0} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{NMAX} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+        \PY{k}{if} \PY{n}{N0} \PY{o}{\PYZgt{}} \PY{n}{NMAX}\PY{p}{:}
+            \PY{n}{image4}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+        \PY{k}{elif} \PY{n}{NMAX} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{N0}\PY{p}{:}
+            \PY{n}{image4}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{image4}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \ldots right-left, top-bottom, \ldots{}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{image5} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{image}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NY}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NX}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{n}{N0}\PY{p}{,} \PY{n}{NMAX} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}
+        \PY{n}{m}\PY{p}{,} \PY{n}{n} \PY{o}{=} \PY{n}{neighbors}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{,} \PY{n}{NX}\PY{p}{,} \PY{n}{NY}\PY{p}{)}
+        \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{image5}\PY{p}{[}\PY{n}{n}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{,} \PY{n}{m}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                \PY{n}{N0} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{NMAX} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+        \PY{k}{if} \PY{n}{N0} \PY{o}{\PYZgt{}} \PY{n}{NMAX}\PY{p}{:}
+            \PY{n}{image5}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+        \PY{k}{elif} \PY{n}{NMAX} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{N0}\PY{p}{:}
+            \PY{n}{image5}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{image5}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{vmin}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{vmax}\PY{o}{=}\PY{o}{.}\PY{l+m+mi}{6}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \ldots right-left, bottom-top\ldots{}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{image6} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{image}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NY}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NX}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{n}{N0}\PY{p}{,} \PY{n}{NMAX} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}
+        \PY{n}{m}\PY{p}{,} \PY{n}{n} \PY{o}{=} \PY{n}{neighbors}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{,} \PY{n}{NX}\PY{p}{,} \PY{n}{NY}\PY{p}{)}
+        \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{image6}\PY{p}{[}\PY{n}{n}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{,} \PY{n}{m}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                \PY{n}{N0} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{NMAX} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+        \PY{k}{if} \PY{n}{N0} \PY{o}{\PYZgt{}} \PY{n}{NMAX}\PY{p}{:}
+            \PY{n}{image6}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+        \PY{k}{elif} \PY{n}{NMAX} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{N0}\PY{p}{:}
+            \PY{n}{image6}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{image6}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{vmin}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{vmax}\PY{o}{=}\PY{o}{.}\PY{l+m+mi}{6}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \ldots{} bottom-top, right-left\ldots{}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{image7} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{image}\PY{p}{)}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NX}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NY}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{n}{N0}\PY{p}{,} \PY{n}{NMAX} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}
+        \PY{n}{m}\PY{p}{,} \PY{n}{n} \PY{o}{=} \PY{n}{neighbors}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{,} \PY{n}{NX}\PY{p}{,} \PY{n}{NY}\PY{p}{)}
+        \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{image7}\PY{p}{[}\PY{n}{n}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{,} \PY{n}{m}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                \PY{n}{N0} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{NMAX} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+        \PY{k}{if} \PY{n}{N0} \PY{o}{\PYZgt{}} \PY{n}{NMAX}\PY{p}{:}
+            \PY{n}{image7}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{0}
+        \PY{k}{elif} \PY{n}{NMAX} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{n}{N0}\PY{p}{:}
+            \PY{n}{image7}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{image7}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{vmin}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{vmax}\PY{o}{=}\PY{o}{.}\PY{l+m+mi}{6}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_18_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{only-white-pixels}{%
+\subsubsection{Only white pixels}\label{only-white-pixels}}
+
+Another possible manner is to update only white cells, paralely\ldots{}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{image8} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{image}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Compute N0 and NMAX for each cell}
+\PY{n}{N0}\PY{p}{,} \PY{n}{NMAX} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{NY}\PY{p}{,} \PY{n}{NX}\PY{p}{)}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)}\PY{p}{,} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{NY}\PY{p}{,} \PY{n}{NX}\PY{p}{)}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NX}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NY}\PY{p}{)}\PY{p}{:}
+        \PY{n}{m}\PY{p}{,} \PY{n}{n} \PY{o}{=} \PY{n}{neighbors}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{,} \PY{n}{NX}\PY{p}{,} \PY{n}{NY}\PY{p}{)}
+        \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+            \PY{k}{if} \PY{n}{image8}\PY{p}{[}\PY{n}{n}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{,} \PY{n}{m}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                \PY{n}{N0}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{k}{else}\PY{p}{:}
+                \PY{n}{NMAX}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{c+c1}{\PYZsh{} Apply the rule}
+\PY{n}{image8}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{logical\PYZus{}and}\PY{p}{(}\PY{n}{image8} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{N0} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{NMAX}\PY{p}{)}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{image8}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_20_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \ldots{} or sequentially\ldots{}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{image9} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{image}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Compute N0 and NMAX for each cell}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NX}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NY}\PY{p}{)}\PY{p}{:}
+        \PY{k}{if} \PY{n}{image9}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n}{m}\PY{p}{,} \PY{n}{n} \PY{o}{=} \PY{n}{neighbors}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{,} \PY{n}{NX}\PY{p}{,} \PY{n}{NY}\PY{p}{)}
+            \PY{n}{NMAX}\PY{p}{,} \PY{n}{N0} \PY{o}{=} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}
+            \PY{k}{for} \PY{n}{p} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                \PY{k}{if} \PY{n}{image9}\PY{p}{[}\PY{n}{n}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{,} \PY{n}{m}\PY{p}{[}\PY{n}{p}\PY{p}{]}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                    \PY{n}{N0} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+                \PY{k}{else}\PY{p}{:}
+                    \PY{n}{NMAX} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+            \PY{k}{if} \PY{n}{N0} \PY{o}{\PYZlt{}}\PY{o}{=} \PY{n}{NMAX}\PY{p}{:}
+                \PY{n}{image9}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{l+m+mi}{1}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{image9}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_22_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    But what do we want to forget black pixels in the middle of nothing
+(which possible means noise)?
+
+\hypertarget{object-detection}{%
+\subsection{Object Detection}\label{object-detection}}
+
+The object detection procude is even harder to understant. The authors
+say:
+
+``\emph{Finally, the object detection is performed. The binarized image
+is raster scanned from the left- to right-hand side and from the top to
+bottom. The current pixel \((x_{n(r)}, y_{n(r)})\) is labeled as
+belonging to an object or to the background by examining its
+connectivity to the right-hand-side neighbors
+\((\hat{x}_j, \hat{y}_j)\), \(j = 1,\cdots, N_p^{(rh)}\). For example,
+if \(\tau_{dn}(x_{n(r)}, y_{n(r)}) = \tau_{max}\), then it is assigned
+to the object \(q\) to which it is connected. A new object-label
+\((q+1)\) is assigned when a transition from a background pixel to an
+isolated object pixel is detected.}''
+
+This kind of thing will work well for this case:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{image} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{n}{image9}\PY{p}{)}
+\PY{n}{labels} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{image}\PY{o}{.}\PY{n}{shape}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)}
+
+\PY{n}{q} \PY{o}{=} \PY{l+m+mi}{0}
+\PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NY}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NX}\PY{p}{)}\PY{p}{:}
+
+        \PY{c+c1}{\PYZsh{} If there this pixel is an object}
+        \PY{k}{if} \PY{n}{image}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{:}
+            \PY{n}{m}\PY{p}{,} \PY{n}{n} \PY{o}{=} \PY{n}{neighbors}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{,} \PY{n}{NX}\PY{p}{,} \PY{n}{NY}\PY{p}{)}
+            \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+
+                \PY{c+c1}{\PYZsh{} If a neighbor has already been labeled }
+                \PY{k}{if} \PY{n}{labels}\PY{p}{[}\PY{n}{n}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{,} \PY{n}{m}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{]} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{:}
+                    \PY{n}{labels}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{labels}\PY{p}{[}\PY{n}{n}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{,} \PY{n}{m}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{]}
+                    \PY{k}{break}
+
+                \PY{c+c1}{\PYZsh{} New object is detected}
+                \PY{k}{elif} \PY{n}{k} \PY{o}{==} \PY{n+nb}{len}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+                    \PY{n}{q} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+                    \PY{n}{labels}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{q}
+
+\PY{c+c1}{\PYZsh{} Figures objects}
+\PY{n}{fig}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{nrows}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{ncols}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{14}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Image plot}
+\PY{n}{gray} \PY{o}{=} \PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{image}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{n}{gray}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Label plot}
+\PY{n}{color} \PY{o}{=} \PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{labels}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{n}{color}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_24_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    Now, think for example if we have a ``U'':
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{u} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+              \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+              \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+              \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+              \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+              \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+              \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,}    \PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+              \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+              \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+              \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}
+              \PY{p}{[} \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,}    \PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{u}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_26_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    If we apply the same algorithm:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{21}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{labels} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{u}\PY{o}{.}\PY{n}{shape}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n+nb}{int}\PY{p}{)}
+
+\PY{n}{q} \PY{o}{=} \PY{l+m+mi}{0}
+\PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NY}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NX}\PY{p}{)}\PY{p}{:}
+    
+        \PY{c+c1}{\PYZsh{} If there this pixel is an object}
+        \PY{k}{if} \PY{n}{u}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{==} \PY{l+m+mi}{1}\PY{p}{:}
+            \PY{n}{m}\PY{p}{,} \PY{n}{n} \PY{o}{=} \PY{n}{neighbors}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{,} \PY{n}{NX}\PY{p}{,} \PY{n}{NY}\PY{p}{)}
+            \PY{n}{aux} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{)}
+            \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+
+                \PY{c+c1}{\PYZsh{} If a neighbor has already been labeled }
+                \PY{k}{if} \PY{n}{labels}\PY{p}{[}\PY{n}{n}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{,} \PY{n}{m}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{]} \PY{o}{!=} \PY{l+m+mi}{0}\PY{p}{:}
+                    \PY{n}{labels}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{labels}\PY{p}{[}\PY{n}{n}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{,} \PY{n}{m}\PY{p}{[}\PY{n}{k}\PY{p}{]}\PY{p}{]}
+                    \PY{k}{break}
+
+                \PY{c+c1}{\PYZsh{} New object is detected}
+                \PY{k}{elif} \PY{n}{k} \PY{o}{==} \PY{n+nb}{len}\PY{p}{(}\PY{n}{m}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{:}
+                    \PY{n}{q} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+                    \PY{n}{labels}\PY{p}{[}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{q}
+
+
+\PY{c+c1}{\PYZsh{} Figures objects}
+\PY{n}{fig}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{n}{nrows}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{,} \PY{n}{ncols}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{14}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Image plot}
+\PY{n}{gray} \PY{o}{=} \PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{u}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{binary}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{n}{gray}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} Label plot}
+\PY{n}{color} \PY{o}{=} \PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{labels}\PY{p}{)}
+\PY{n}{fig}\PY{o}{.}\PY{n}{colorbar}\PY{p}{(}\PY{n}{color}\PY{p}{,} \PY{n}{ax}\PY{o}{=}\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    In these cases, the zoom may be applied and two areas which overlap are
+returned as two different areas to solve the equation. Then, PSO will
+have two possible values to represent the same pixel.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
