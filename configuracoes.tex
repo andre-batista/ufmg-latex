@@ -1,0 +1,29 @@
+% Este é um arquivo para ajuste de configurações do documento. Aqui você pode definir as configurações de pacotes, comandos personalizados, estilos de página, etc.
+
+% Configuração de cabeçalhos e rodapés
+\pagestyle{fancy}
+\fancyhf{} % Limpa todos os cabeçalhos e rodapés predefinidos
+\fancyhead[R]{\thepage} % Número da página no cabeçalho direito
+\fancypagestyle{plain}{%
+    \fancyhf{}%
+    \fancyhead[R]{\thepage}%
+}
+\renewcommand{\headrulewidth}{0pt} % Remove a linha horizontal do cabeçalho em todos os estilos
+
+\onehalfspacing % Define o espaçamento entre linhas para 1,5
+\geometry{left=3cm, top=3cm, bottom=2cm, right=2cm} % Define as margens do documento: esquerda 3 cm, topo 3 cm, inferior 2 cm, direita 2 cm
+\setlength{\parindent}{1.25cm} % Define a indentação do parágrafo para 1,25 cm
+\setlength{\parskip}{0cm} % Define o espaçamento entre parágrafos para 0 cm
+\renewcommand\contentsname{Sumário} % Renomeia o título do sumário para "Sumário"
+
+% Define novos ambientes para teoremas, lemas, proposições, corolários, resultados e definições. Você deve traduzir para o inglês se estiver escrevendo em inglês.
+\newtheorem{theorem}{Teorema} % Define o ambiente "theorem" com a numeração independente
+\newtheorem{lemma}[theorem]{Lema} % Define o ambiente "lemma" com a mesma numeração do ambiente "theorem"
+\newtheorem{proposition}[theorem]{Proposição} % Define o ambiente "proposition" com a mesma numeração do ambiente "theorem"
+\newtheorem{corollary}[theorem]{Corolário} % Define o ambiente "corollary" com a mesma numeração do ambiente "theorem"
+\newtheorem{result}[theorem]{Resultado} % Define o ambiente "result" com a mesma numeração do ambiente "theorem"
+\newtheorem{definition}[theorem]{Definição} % Define o ambiente "definition" com a mesma numeração do ambiente "theorem"
+
+% Exemplo de comando personalizado
+\newcommand{\brho}{\boldsymbol{\rho}}
+\newcommand{\brhop}{\boldsymbol{\rho^\prime}}
