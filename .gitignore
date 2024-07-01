@@ -9,6 +9,7 @@
 *.lot
 *.out
 *.synctex.gz
+*.synctex(busy)
 *.toc
 *.bcf
 figuras/*.pdf
