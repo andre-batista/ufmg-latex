@@ -12,6 +12,7 @@
 
 % Define o título e autor do trabalho. Você pode alterar esses valores aqui.
 \title{Título do Trabalho}
+% \subtitle{Subtítulo do Trabalho} % Caso houver, você DEVE descomentar as correspondentes linhas de código nos arquivos folhaderosto.tex e capa.tex.
 \author{Nome da pessoa autora}
 
 \begin{document}
@@ -20,33 +21,17 @@
     \pagenumbering{gobble}
 
     % Capa
-    \include{capa}
+    \include{./pretextuais/capa}
 
     % Folha de rosto
-	\newpage
-	% \mainmatter
-	\thispagestyle{empty}
-	\begin{center}
-		\theauthor\\
-		\vspace{5cm}
-		\textbf{\thetitle}
-	\end{center}
-	\vspace{5cm}
-	\hfill
-	\begin{minipage}{8cm}
-		Thesis presented to the Graduate Program in Electrical Engineering at the Federal University of Minas Gerais as a partial requirement to obtain the title of Doctor in Electrical Engineering.\\[3mm]
-		Supervisor: Prof. Dr. Lucas de Souza Batista \\[3mm]
-		Co-supervisor: Prof. Dr. Ricardo Luiz da Silva Adriano
-	\end{minipage}\\
-	\begin{center}
-		\vspace*{\fill}
-		Belo Horizonte\\2023
-	\end{center}
+    \include{./pretextuais/folhaderosto}
 
-    \includepdf{fichacatalografica}
+    % Ficha catalográfica: só para trabalhos de mestrado e doutorado.
+    \includepdf{./pretextuais/fichacatalografica}
 
-    % Você precisará especificar as páginas.
-    \includepdf[pages={1-2}]{atadefesa}
+    % Ata de defesa: só para trabalhos de mestrado e doutorado.
+    % Caso a ata tenha 2 páginas, você alterar o parâmetro pages={1} para pages={1-2}.	
+    \includepdf[pages={1-2}]{./pretextuais/atadefesa}
 
     % Dedicatória
     \include{./pretextuais/dedicatoria}
@@ -57,9 +42,9 @@
     % Epígrafe
     \include{./pretextuais/epigrafe}
 
+    % Resumo e Abstract
 	\include{./pretextuais/resumo}
     \include{./pretextuais/abstract}
-    
 
 	\begingroup
 		\pagestyle{empty}

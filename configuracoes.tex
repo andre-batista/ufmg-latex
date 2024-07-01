@@ -24,6 +24,10 @@
 \newtheorem{result}[theorem]{Resultado} % Define o ambiente "result" com a mesma numeração do ambiente "theorem"
 \newtheorem{definition}[theorem]{Definição} % Define o ambiente "definition" com a mesma numeração do ambiente "theorem"
 
+% Definir o comando para armazenar o subtítulo
+\newcommand{\thesubtitle}{}
+\newcommand{\subtitle}[1]{\renewcommand{\thesubtitle}{#1}}
+
 % Exemplo de comando personalizado
 \newcommand{\brho}{\boldsymbol{\rho}}
 \newcommand{\brhop}{\boldsymbol{\rho^\prime}}
