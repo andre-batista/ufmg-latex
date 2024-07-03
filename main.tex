@@ -1,18 +1,28 @@
-% O projeto é construído a partir do modelo padrão de livro do LaTeX. As diretrizes da UFMG requerem que o tamanho da fonte seja 12 pontos, a folha seja do tamanho A4 e que tenha só uma coluna de texto.
+% O projeto é construído a partir do modelo padrão de livro do LaTeX. As 
+% diretrizes da UFMG requerem que o tamanho da fonte seja 12 pontos, a folha 
+% seja do tamanho A4 e que tenha só uma coluna de texto.
 \documentclass[12pt,a4paper,oneside]{book}
 
-% Suporte a caracteres da língua portuguesa. Se você estiver escrevendo em inglês, remova essa linha.
+% Suporte a caracteres da língua portuguesa. Se você estiver escrevendo em 
+% inglês, remova essa linha.
 \usepackage[brazil]{babel} 
 
-% Inclui a lista de pacotes utilizados. Você pode adicionar novos pacotes aqui ou dentro do arquivo pacotes.tex.
+% Inclui a lista de pacotes utilizados. Você pode adicionar novos pacotes aqui 
+% ou dentro do arquivo pacotes.tex.
 \include{pacotes}
 
-% Inclui as configurações do documento. Você pode adicionar novas configurações aqui ou dentro do arquivo configuracoes.tex.
+% Inclui as configurações do documento. Você pode adicionar novas configurações
+% aqui ou dentro do arquivo configuracoes.tex.
 \include{configuracoes}
 
 % Define o título e autor do trabalho. Você pode alterar esses valores aqui.
 \title{Título do Trabalho}
-% \subtitle{Subtítulo do Trabalho} % Caso houver, você DEVE descomentar as correspondentes linhas de código nos arquivos folhaderosto.tex e capa.tex.
+
+% Caso houver, você DEVE descomentar as correspondentes linhas de código nos 
+% arquivos folhaderosto.tex e capa.tex.
+% \subtitle{Subtítulo do Trabalho} 
+
+% Define o nome da pessoa autora. Você pode alterar esse valor aqui.
 \author{Nome da pessoa autora}
 
 \begin{document}
@@ -30,7 +40,8 @@
     \includepdf{./pretextuais/fichacatalografica}
 
     % Ata de defesa: só para trabalhos de mestrado e doutorado.
-    % Caso a ata tenha 2 páginas, você alterar o parâmetro pages={1} para pages={1-2}.	
+    % Caso a ata tenha 2 páginas, você alterar o parâmetro pages={1} para 
+    % pages={1-2}.	
     \includepdf[pages={1-2}]{./pretextuais/atadefesa}
 
     % Dedicatória
@@ -46,14 +57,8 @@
 	\include{./pretextuais/resumo}
     \include{./pretextuais/abstract}
 
-	\begingroup
-		\pagestyle{empty}
-		\listoffigures
-		\pagestyle{empty}
-		\listoftables
-		\pagestyle{empty}
-		\listofalgorithms
-	\endgroup
+	% Listas
+    \include{textuais/listas}
 	
 	\include{./pretextuais/abbreviations}
     
