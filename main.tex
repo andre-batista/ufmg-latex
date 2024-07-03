@@ -63,10 +63,16 @@
     % Abreviações e símbolos
 	\include{./pretextuais/abreviacoes}
     
+    % Sumário
     \thispagestyle{empty}
     \tableofcontents
 
-    \include{./textuais/introduction}
+
+    \pagenumbering{arabic}
+    \setcounter{page}{12}
+
+    % Introdução
+    \include{./textuais/introducao}
     \include{./textuais/problem-statement}
     \include{./textuais/methods-overview}
     \include{./textuais/proposed-methodology}
