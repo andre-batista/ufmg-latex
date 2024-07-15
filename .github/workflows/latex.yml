@@ -1,31 +1,26 @@
 name: Build LaTeX document
-
-on:
-  push:
-    branches:
-      - main  # ou qualquer outro branch que você queira monitorar
-  pull_request:
-    branches:
-      - main
-
+on: [push]
 jobs:
-  build:
+  build_latex:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Set up Git repository
         uses: actions/checkout@v2
-
-      - name: Set up LaTeX
+      - name: pdflatex main
         uses: dante-ev/latex-action@latest
         with:
           root_file: main.tex
-
-      - name: Compile LaTeX document
-        run: latexmk -pdf main.tex 
-
-      - name: Upload PDF artifact
-        uses: actions/upload-artifact@v2
+          compiler: pdflatex
+          args: -interaction=nonstopmode -shell-escape
+      - name: bibtex main
+        uses: dante-ev/latex-action@latest
         with:
-          name: document
-          path: main.pdf
+          root_file: main.aux
+          compiler: bibtex
+          args: 
+      - name: pdflatex main
+        uses: dante-ev/latex-action@latest
+        with:
+          root_file: main.tex
+          compiler: pdflatex
+          args: -interaction=nonstopmode -shell-escape
