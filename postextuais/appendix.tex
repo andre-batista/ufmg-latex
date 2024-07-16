@@ -32,16 +32,101 @@
 		\begin{multline}
 			\chi(\brho)E_{z_i}(\brho) = J_{z_{eq}}(\brho) + \frac{jk_b^2}{4} \chi(\brho) \int_S dS^\prime J_0(k_b|\brho-\brhop|) J_{z_{eq}}(\brhop) \\ + \frac{jk_b^2}{4} \chi(\brho) \int_S dS^\prime Y_0(k_b|\brho-\brhop|) J_{z_{eq}}(\brhop)  \label{eq:2:2d:greendecomp:csie}
 		\end{multline}
+
+		Um exemplo de equação com somatórios e integrais:
+		\begin{multline}
+			\iint_D E_{z_s}(\theta,\phi) w^{(\theta)}_u(\theta) w^{(\phi)}_v(\phi) d\theta d\phi = \\ -\frac{jk_b^2}{4} \sum\limits_{i=1}^{N_I}\sum\limits_{j=1}^{N_J} \sum\limits_{p=1}^{N_P}\sum\limits_{q=1}^{N_Q}\sum\limits_{r=1}^{N_R} a_{ij} b_{pqr} \iint\limits_{D} \iint\limits_{S} d\theta d\phi dxdy~ \bigg[ G^D_{2D}(\theta,x,y) \\ f^{(x)}_i(x) f^{(y)}_j(y) g^{(x)}_{p}(x) g^{(y)}_{q}(y) g^{(\phi)}_r(\phi)w^{(\theta)}_u(\theta) w^{(\phi)}_v(\phi)  \bigg], \\ u = 1,\cdots, N_U,~ v = 1,\cdots,N_V \label{eq:3:discretization:6}
+		\end{multline}
+
+		Um exemplo de definição de matriz:
+		\begin{equation}
+			\boldsymbol{\bar{\Lambda}} = \begin{bmatrix}
+																\Lambda_{11} & \Lambda_{12} & \cdots & \Lambda_{1N_V} \\
+															   \Lambda_{21} & \Lambda_{22} & \cdots & \Lambda_{2N_V} \\
+															   \vdots & \vdots & \vdots & \vdots \\
+															   \Lambda_{u1} & \Lambda_{u2} & \cdots & \Lambda_{uN_V} \\
+															   \vdots & \vdots & \vdots & \vdots \\
+															   \Lambda_{N_U1} & \Lambda_{N_U2} & \cdots & \Lambda_{N_UN_V}
+															  \end{bmatrix} \label{eq:discretization:9}
+	   \end{equation}
+
+	   Um exemplo de definição de casos:
+	   \begin{equation}
+		w_{uv} = \begin{cases}
+						  1,& \mathrm{in} ~D_{uv}, \\
+						  0,& \mathrm{outside}, ~D_{uv}
+					  \end{cases} \label{eq:3:discretization:subdomain}
+		\end{equation}
+
+		Um exemplo para organização de três matrizes em uma mesma linha:
+		\begin{align}
+			\boldsymbol{\bar{\chi}} &=	\begin{bmatrix}
+														 \chi_{11} & 0 & \cdots & 0 \\
+														 0 & \chi_{12} & \cdots & 0 \\
+														 \vdots & \vdots & \ddots & \vdots \\
+														  0 & 0 & \cdots & \chi_{N_IN_J}
+													 \end{bmatrix}
+			&\boldsymbol{\bar{\beta}} &=	\begin{bmatrix}
+																\beta_{11} & 0 & \cdots & 0 \\
+																0 & \beta_{12} & \cdots & 0 \\
+																\vdots & \vdots & \ddots & \vdots \\
+																0 & 0 & \cdots & \beta_{N_IN_J}
+															\end{bmatrix}
+			&\mathbf{\bar{R}} &=	\begin{bmatrix}
+													R_{11} & 0 & \cdots & 0 \\
+													0 & R_{12} & \cdots & 0 \\
+													\vdots & \vdots & \ddots & \vdots \\
+													0 & 0 & \cdots & R_{N_IN_J}
+												\end{bmatrix} \label{eq:3:discretization:collocation:18}
+		\end{align}
+
+		Note que você pode referenciar equações das seguintes formas:
+		\begin{itemize}
+			\item Quando ela estiver no meio da frase, você pode usar simplesmente o comando \verb|\eqref{}|. Por exemplo: ``...como mostrado em \eqref{eq:2:maxwell:time:1}, ...''
+			\item Quando você estiver no início da frase, você pode escrever: ``A Eq. \eqref{eq:2:maxwell:time:1} mostra que...''
+		\end{itemize}
 	
 	\chapter{Como inserir figuras}
 
-		Um exemplo sobre como inserir figuras simples pode ser visto em \ref{fig:2:scattering}.
+		Um exemplo sobre como inserir figuras simples pode ser visto em \ref{fig:2:scattering}. Você pode referenciar figuras através do comando \verb|\ref{}| ou do comando \verb|\autoref{}|. O primeiro comando apenas referencia o número da figura, enquanto o segundo comando referencia o número da figura e o nome dela. Por exemplo, você pode escrever: ``...como mostrado na \autoref{fig:2:scattering}, ...''.
 		\begin{figure}[!tb]
 			\centering
 			\includegraphics[width=0.5\textwidth]{./figuras/scattering}
 			\caption{General scattering problem.}
 			\label{fig:2:scattering}
 		\end{figure}
+	
+	\chapter{Como inserir algoritmos}
+
+		Um exemplo de algoritmo é o seguinte:
+		\begin{algorithm}[!htb]
+			\caption{Distorted Born Iterative Method.}
+			\label{alg:dbim}
+			\KwIn{$\mathbf{\bar{E}^s}$, $\mathbf{\bar{G}^{2D}}$, $\mathbf{\bar{G}^S}$}
+			\KwOut{$\boldsymbol{\bar{\chi}}$, $\mathbf{\bar{E}}$}
+			Compute an initial guess $\boldsymbol{\bar{\chi}^0}$ based on available information \\
+			$t\leftarrow0$ \\
+			\While{some criterion is not reached} {
+				Solve $\left(\mathbf{\bar{I}} - \mathbf{\bar{G}^S}\boldsymbol{\bar{\chi}}^t\right)\mathbf{\bar{G}}^{\mathbf{in},t} = \mathbf{\bar{G}^{2D}}$ for $\mathbf{\bar{G}}^{\mathbf{in},t}$ \\
+				Solve the direct problem for $\mathbf{\bar{E}}^t$ and $\mathbf{\bar{E}}^{\mathbf{s},t}$ \\
+				$\Delta\mathbf{\bar{E}^s} = \mathbf{\bar{E}}^s - \mathbf{\bar{E}}^{\mathbf{s},t}$ \\
+				Solve the inverse linear problem $\Delta\mathbf{\bar{E}^s} = \mathbf{\bar{G}}^{\mathbf{in},t}\Delta\boldsymbol{\bar{\chi}}\mathbf{\bar{E}}^t$ for $\Delta\boldsymbol{\bar{\chi}}$\\
+				$\boldsymbol{\bar{\chi}}^t \leftarrow \boldsymbol{\bar{\chi}}^{t-1} + \Delta\boldsymbol{\bar{\chi}}^t$ \\
+				$t\leftarrow t+1$\\
+			}
+		\end{algorithm}
+	
+	\chapter{Como inserir definições e outras coisas especiais}
+
+		Um exemplo de definição:
+		\begin{definition}\label{def:3:projection}
+			Projection Operator\\
+			Let $X$ be a normed space over the field $\mathbb{K}=\mathbb{R}$ or $\mathbb{K}=\mathbb{C}$. Let $U\subset X$ be a closed subspace. A linear bounded operator $\mathcal{P} : X\rightarrow X$ is called a projection operator on $U$ if
+			\begin{itemize}
+				\item $\mathcal{P}\{x\} \in U, ~\forall x\in X$ and
+				\item $\mathcal{P}\{x\} = x,~ \forall x\in U$.
+			\end{itemize}
+		\end{definition}
 
 	\chapter{Dyadic Green's Function}\label{app:green}
 	
