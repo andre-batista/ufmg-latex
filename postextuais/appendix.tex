@@ -95,6 +95,58 @@
 			\caption{General scattering problem.}
 			\label{fig:2:scattering}
 		\end{figure}
+
+		Um exemplo de múltiplas figuras pode ser visto na \autoref{fig:3:lcurve}.
+		\begin{figure}[!htb]
+			\centering
+			\subfloat[]{\includegraphics[width=.5\textwidth]{figuras/lcurve_input}}
+			\subfloat[]{\includegraphics[width=.5\textwidth]{figuras/lcurve}} \\
+			\subfloat[]{\includegraphics[width=.5\textwidth]{figuras/lcurve_result}}
+			\caption[Exemplo de aplicação do Método da Curva-L.]{Example of applying the L-curve Method to a linear problem where it presupposes knowledge of the total field. (a) A simple instance of a contrast dielectric circle $\chi=0.25$ and radius $0.8\lambda_b$. Respecting the degrees of freedom, the scattered field was sampled in 45 positions for 45 incidence angles at a distance of $10\lambda_b$ from the center of the image. (b) L-curve considering 20 values of $\alpha_T$ in a range of $10^{-5}$ a $10^{-2}$. The red dot represents the solution with the shortest normalized distance to the origin. Its $\alpha_T$ value is approximately $2.3357 \times10^{-3}$. (c) Reconstruction of the image using the $\alpha_T$ value from the red dot. No inverse crime was committed since the data were obtained from the analytical solution.}
+			\label{fig:3:lcurve}
+		\end{figure}
+	
+	\chapter{Como inserir tabelas}
+
+		Um exemplo de tabela simples pode ser visto em \ref{tab:methods:conclusion}. Você pode referenciar tabelas da mesma forma que você referencia figuras. Por exemplo, você pode escrever: ``...como mostrado na \autoref{tab:methods:conclusion}, ...''.
+
+		\begin{table}[]
+			\setstretch{1.5}
+			\caption{Classification of methods by their properties.}
+			\label{tab:methods:conclusion}
+			\begin{tabular}{clm{2cm}m{2cm}m{6cm}}
+				\hline
+				Classes & \multicolumn{4}{c}{Methods} \\ \hline
+				\multirow{2}{*}{Qualitative} & \multicolumn{4}{l}{Linear Sampling Method} \\
+				& \multicolumn{4}{l}{Orthogonality Sampling Method} \\ \hline
+				\multirow{26}{*}{Quantitative} & \multirow{15}{*}{Deterministic} & \multirow{4}{*}{Linear} & \multicolumn{2}{l}{Born Approximation} \\
+				&  &  & \multicolumn{2}{l}{Rytov Approximation} \\
+				&  &  & \multicolumn{2}{l}{Back-Propagation Method} \\
+				&  &  & \multicolumn{2}{l}{Dominant Current Scheme} \\ \cline{3-5} 
+				&  & \multirow{11}{*}{Nonlinear} & \multirow{4}{*}{\makecell[l]{Forward\\and\\inverse\\subproblems}} & Born Iterative Method \\
+				&  &  &  & Distorted Born Iterative Method \\
+				&  &  &  & Variational Born Iterative Method \\
+				&  &  &  & Level-Set Method \\ \cline{4-5} 
+				&  &  & \multirow{3}{*}{\makecell[l]{Gradient-\\based}} & Conjugated-Gradient Method \\
+				&  &  &  & Contrast Source Inversion \\
+				&  &  &  & Subspace-based Optimization Method \\ \cline{4-5} 
+				&  &  & \multirow{4}{*}{Other} & Compressive Sensing \\
+				&  &  &  & Regularization on Lp Banach Spaces \\
+				&  &  &  & Virtual Experiments \\
+				&  &  &  & Deep learning methods \\ \cline{2-5} 
+				& \multirow{11}{*}{Stochatisc} & Components & \multicolumn{2}{l}{Types} \\ \cline{3-5} 
+				&  & \multirow{3}{*}{\makecell[l]{Representa-\\tion}} & \multicolumn{2}{l}{Known geometries} \\
+				&  &  & \multicolumn{2}{l}{Contours} \\
+				&  &  & \multicolumn{2}{l}{Pixel-based} \\ \cline{3-5} 
+				&  & \multirow{2}{*}{\makecell[l]{Objective\\function}} & \multicolumn{2}{l}{Data equation residual} \\
+				&  &  & \multicolumn{2}{l}{Data and state equation residual} \\ \cline{3-5} 
+				&  & \multirow{3}{*}{Mechanism} & \multicolumn{2}{l}{GA} \\
+				&  &  & \multicolumn{2}{l}{DE} \\
+				&  &  & \multicolumn{2}{l}{PSO} \\ \cline{3-5} 
+				&  & \multirow{2}{*}{\makecell[l]{Population\\Initialization}} & \multicolumn{2}{l}{Random} \\
+				&  &  & \multicolumn{2}{l}{Born Approximation} \\\hline
+			\end{tabular}
+		\end{table}
 	
 	\chapter{Como inserir algoritmos}
 
