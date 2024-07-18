@@ -1,6 +1,14 @@
-# ufmg-latex
-Modelo para TCCs, dissertações e teses na UFMG.
+# ufmg-latex - Modelo Não-Oficial para Trabalhos Acadêmicos na UFMG
 
-## A fazer
+A Universidade Federal de Minas Gerais (UFMG) possui um documento com diretrizes para trabalhos acadêmicos (o qual está anexado neste repositório). Logo, não existe necessariamente um modelo padrão no qual estudantes podem baixar e escrever seus próprios trabalhos. Em relação ao LaTeX, existem alguns modelos que algumas pessoas fizeram, como por exemplo, o do MINDS e o do PPGCC. Esse modelo nasceu de uma inquietação em relação ao uso de modelos prontos, os quais são produzidos através de construções próprias de classe de documento. Por um lado, isso é bom porque automatiza muita coisa. Por outro lado, pode ser mais complicado fazer mudanças ou obter problemas de conflitos quando adicionando novos pacotes.
 
-* Criar um build automático no GitHub.
+Pensando nisso, esse modelo foi pensado com o objetivo de ser construído através da classe natural do LaTeX (a *book*), com quase nenhuma automatização (para que fosse mais simples de fazer modificações do modelo) e de ser o mais próximo possível das diretrizes da UFMG, para que seja aprovado no repositório da UFMG (**que é o mais importante**). A ideia é que, seguindo direito as orientações do modelo, *a chance de você ter seu trabalho aprovado de primeira no repositório sejam grandes*. O modelo tem bastante comentários, exatamente para ajudar quem estiver começando a aprender a escrever no LaTeX. O modelo foi pensado tanto para quem está escrevendo tese ou dissertação como quem está escrevendo um trabalho de conclusão de curso. O modelo está configurado para o português mas, nos comentários, existem orientações para a mudança para o inglês. De qualquer forma, essas mudanças nada mais são do que as próprias opções que os pacotes do LaTeX fornecem.
+
+Para usar esse modelo, você pode baixar o repositório e usar localmente ou subir no Overleaf. Se você quiser, você pode dar fork nesse repositório e escrever seu trabalho usando o GitHub para gerenciar melhor as versões do seu trabalho. Também é uma boa usar IDEs de programação, como o VSCode, para escrever seu trabalho. Isto porque tem boa integração com as ferramentas Git, GitHub, GitHub Copilot, entre outros.
+
+Aqui vão algumas observações:
+
+* Quem está escrevendo trabalho de conclusão de curso **não** precisa submeter o trabalho pro repositório da UFMG nem precisa ser as diretrizes. *Também não precisa de obter folha de aprovação nem ficha catalográfica*.
+* **Super-importante**: não se esqueça de configurar corretamente o número da página da primeira página da introdução. Essa é uma das principais dores de cabeça com a submissão. A orientação para isso está no *main.tex*. A contagem começa na folha de rosto. Só que, até antes do primeiro capítulo, não é para ter número da página. Aí você precisa acertar o número que vai aparecer na primeira página da introdução.
+* O padrão das citações não está configurado nesse momento para o ABNT. Está no padrão APA. Aparentemente, essa é uma diferença que o pessoal do repositório da UFMG não liga.
+* Contribuições para o projeto são bem-vindas!
