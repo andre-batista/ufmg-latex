@@ -4,9 +4,11 @@
 
 	\chapter{Como fazer citações}
 
-		Você pode fazer uma citação de diversas formas. Se você quiser fazer uma citação entre parênteses, você pode fazer assim: \citep{milgram1969note}. Se você quiser mencionar o número da página, você pode fazer assim: \citep[p. 10]{deb2002fast}. Agora, se você quiser fazer uma citação onde o autor é parte da sentença, você pode fazer assim: \cite{maxwell1865viii} afirma que... Se você quiser fazer uma citação com mais de um autor, você pode fazer assim: \citep{van2019fantastic,maxwell1865viii}.
+		Você pode fazer uma citação de diversas formas. Se você quiser fazer uma citação entre parênteses, você pode fazer assim: \citep{milgram1969note}. Se você quiser mencionar o número da página, você pode fazer assim: \citep[p. 10]{deb2002fast}. Agora, se você quiser fazer uma citação onde o autor é parte da sentença, você pode fazer assim: \cite{maxwell1865viii} afirma que... Se você quiser fazer uma citação com mais de um autor, você pode fazer assim: \citep{van2019fantastic,maxwell1865viii}. \textbf{Pode que ser, às vezes, você tenha que compilar o arquivo mais de uma vez para que as citações apareçam corretamente. Ou até escrever qualquer coisa a mais.}
 	
 	\chapter{Como escrever equações}
+
+		O LaTeX oferece uma ampla gama de recursos e pacotes para escrever e formatar equações de forma clara e profissional. Além disso, o LaTeX permite referenciar e numerar automaticamente as equações, facilitando a referência cruzada e a organização do conteúdo matemático. Aqui estão alguns exemplos de equações que você pode usar em seu trabalho.
 
 		Um exemplo básico de equação:
 		\begin{equation}
@@ -81,22 +83,44 @@
 		\end{align}
 
 		Note que você pode referenciar equações das seguintes formas:
+
 		\begin{itemize}
 			\item Quando ela estiver no meio da frase, você pode usar simplesmente o comando \verb|\eqref{}|. Por exemplo: ``...como mostrado em \eqref{eq:2:maxwell:time:1}, ...''
 			\item Quando você estiver no início da frase, você pode escrever: ``A Eq. \eqref{eq:2:maxwell:time:1} mostra que...''
 		\end{itemize}
-	
+
+		É claro que também é possível digitar equações através do comando \verb|$$ $$|, como por exemplo $$a^2 + b^2 = c^2,$$ mas note que o LaTeX não irá numerar a equação e você não poderá referenciá-la.
+		
+		Pode ser também que você queira usar o comando \verb|\begin{equation}\end{equation}| e que o texto em seguida não comece em um novo parágrafo. Nesse caso, você pode usar o comando \verb|\noindent| para evitar a quebra de linha. Por exemplo:
+		\begin{equation}
+			e^{j\pi} + 1 = 0
+		\end{equation}
+		\noindent a qual é a fórmula de Euler, uma das mais famosas equações da matemática.
+
 	\chapter{Como inserir figuras}
 
 		Um exemplo sobre como inserir figuras simples pode ser visto em \ref{fig:2:scattering}. Você pode referenciar figuras através do comando \verb|\ref{}| ou do comando \verb|\autoref{}|. O primeiro comando apenas referencia o número da figura, enquanto o segundo comando referencia o número da figura e o nome dela. Por exemplo, você pode escrever: ``...como mostrado na \autoref{fig:2:scattering}, ...''.
-		\begin{figure}[!tb]
+		\begin{figure}[h]
 			\centering
 			\includegraphics[width=0.5\textwidth]{./figuras/scattering}
 			\caption{General scattering problem.}
 			\label{fig:2:scattering}
 		\end{figure}
 
-		Um exemplo de múltiplas figuras pode ser visto na \autoref{fig:3:lcurve}.
+		Os comandos de posicionamento de figuras no LaTeX são usados para controlar a posição das figuras em relação ao texto. Existem alguns comandos de posicionamento comumente usados:
+
+		\begin{itemize}
+			\item \verb|[h]|: Posiciona a figura "aqui" (here), ou seja, o mais próximo possível do local onde o comando é inserido no código. No entanto, o LaTeX pode ignorar esse comando se não houver espaço suficiente na página atual para acomodar a figura.
+			\item \verb|[t]|: Posiciona a figura no topo (top) da página.
+			\item \verb|[b]|: Posiciona a figura na parte inferior (bottom) da página.
+			\item \verb|[p]|: Posiciona a figura em uma página separada (page) exclusivamente para figuras.
+			\item \verb|[!htb]|: Combina os comandos [h], [t] e [b], permitindo que o LaTeX escolha a melhor posição para a figura entre o topo, a parte inferior e o local onde o comando é inserido.
+		\end{itemize}
+
+		É importante observar que esses comandos são sugestões para o LaTeX e não garantem que a figura será posicionada exatamente onde você deseja. O LaTeX tentará encontrar a melhor posição para a figura com base em vários fatores, como espaço disponível na página e ajuste do layout.
+
+		Um exemplo de múltiplas figuras pode ser visto na \autoref{fig:3:lcurve}. Um outro exemplode múltiplas figuras pode ser visto na \autoref{fig:proposed-methodology:surrogate:optimization:objfun}. Um exemplo para inserir duas figuras horizontais é a Figura \ref{fig:results:casestudy:austria:boxplot:zeta_eoe}.
+
 		\begin{figure}[!htb]
 			\centering
 			\subfloat[]{\includegraphics[width=.5\textwidth]{figuras/lcurve_input}}
@@ -106,8 +130,6 @@
 			\label{fig:3:lcurve}
 		\end{figure}
 
-
-		Um outro exemplode múltiplas figuras pode ser visto na \autoref{fig:proposed-methodology:surrogate:optimization:objfun}.
 		\begin{figure}[!h]
 			\centering
 			\subfloat[]{\includegraphics[width=.4\textwidth]{./figuras/objfun_groundtruth}\label{fig:proposed-methodology:surrogate:optimization:objfun:groundtruth}} \hspace{.05\textwidth}
@@ -118,11 +140,11 @@
 			\label{fig:proposed-methodology:surrogate:optimization:objfun}
 		\end{figure}
 
-		Exemplo para inserir duas figuras horizontais \ref{fig:results:casestudy:austria:boxplot:zeta_eoe}:
+		
 		\begin{figure}
 			\centering
-			\subfloat[]{\includegraphics[width=.9\textwidth]{./figuras/casestudy/austria/boxplot_zeta_eoe_ea}\label{fig:results:casestudy:austria:boxplot:zeta_eoe:withea}} \\
-			\subfloat[]{\includegraphics[width=.9\textwidth]{./figuras/casestudy/austria/boxplot_zeta_eoe}\label{fig:results:casestudy:austria:boxplot:zeta_eoe:noea}}
+			\subfloat[]{\includegraphics[width=.9\textwidth]{./figuras/boxplot_zeta_eoe_ea}\label{fig:results:casestudy:austria:boxplot:zeta_eoe:withea}} \\
+			\subfloat[]{\includegraphics[width=.9\textwidth]{./figuras/boxplot_zeta_eoe}\label{fig:results:casestudy:austria:boxplot:zeta_eoe:noea}}
 			\caption[Performance of $\zeta_{\epsilon OE}$ indicator for various algorithms in the Austria profile.]{Performance of $\zeta_{\epsilon OE}$ indicator for various algorithms in the Austria profile. (a) Boxplots show quartiles of 30 executions for stochastic algorithms, and the solid line represents the deterministic algorithms. (b) Exclusion of the EA algorithm for better visualization of differences among algorithms.}
 			\label{fig:results:casestudy:austria:boxplot:zeta_eoe}
 		\end{figure}
@@ -143,10 +165,12 @@
 			\label{tab:results:casestudy:austria:configuration}
 		\end{table}
 
-		Um exemplo de tabela simples pode ser visto em \ref{tab:methods:conclusion}. Você pode referenciar tabelas da mesma forma que você referencia figuras. Por exemplo, você pode escrever: ``...como mostrado na \autoref{tab:methods:conclusion}, ...''.
+		O comando \verb|\renewcommand{\arraystretch}{1.3}| redefine o espaçamento entre linhas da tabela. Ou você pode usar o comando \verb|\setstretch{1.}| dentro do ambiente da tabela.
+
+		Um exemplo de tabela mais complicada pode ser visto na \ref{tab:methods:conclusion}. Você pode referenciar tabelas da mesma forma que você referencia figuras. Por exemplo, você pode escrever: ``...como mostrado na \autoref{tab:methods:conclusion}, ...''.
 
 		\begin{table}[]
-			\setstretch{1.5}
+			\setstretch{1}
 			\caption{Classification of methods by their properties.}
 			\label{tab:methods:conclusion}
 			\begin{tabular}{clm{2cm}m{2cm}m{6cm}}
@@ -183,7 +207,7 @@
 			\end{tabular}
 		\end{table}
 
-		Exemplo de tabelas em landscape:
+		Se você tiver tabelas muito compridas e precisar colocá-las na horizontal, você pode fazer através do comando \verb|\begin{landscape} ... \end{landscape}|. Um exemplo de tabela na horizontal pode ser visto na \autoref{tab:results:benchmark:zetaeoe:pvalues}.
 
 		\begin{landscape}
 			\begin{table}[]
