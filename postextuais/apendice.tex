@@ -110,7 +110,7 @@
 		Os comandos de posicionamento de figuras no LaTeX são usados para controlar a posição das figuras em relação ao texto. Existem alguns comandos de posicionamento comumente usados:
 
 		\begin{itemize}
-			\item \verb|[h]|: Posiciona a figura "aqui" (here), ou seja, o mais próximo possível do local onde o comando é inserido no código. No entanto, o LaTeX pode ignorar esse comando se não houver espaço suficiente na página atual para acomodar a figura.
+			\item \verb|[h]|: Posiciona a figura ``aqui" (here), ou seja, o mais próximo possível do local onde o comando é inserido no código. No entanto, o LaTeX pode ignorar esse comando se não houver espaço suficiente na página atual para acomodar a figura.
 			\item \verb|[t]|: Posiciona a figura no topo (top) da página.
 			\item \verb|[b]|: Posiciona a figura na parte inferior (bottom) da página.
 			\item \verb|[p]|: Posiciona a figura em uma página separada (page) exclusivamente para figuras.
@@ -157,7 +157,7 @@
 		\begin{table}[!h]
 			\centering
 			\caption[Parameters for Austria profile case study.]{Parameters for problem specification of Austria profile case study.}
-			\rowcolors{1}{gray2}{gray1}
+			\rowcolors{1}{gray2}{gray1} % Define as cores das linhas da tabela
 			\begin{tabular}{cccccc}
 				$N_M$ & $N_S$ & $R_O$ & $f$ & $L_X$, $L_Y$ & $\epsilon_{rb}$ \\
 				32 & 16 & 6 [m] & 400 [MHz] & 2 [m] & 1
@@ -249,7 +249,7 @@
 	
 	\chapter{Como inserir algoritmos}
 
-		Um exemplo de algoritmo é o seguinte:
+		No LaTeX também é possível inserir pseudo-algoritmos. Um exemplo de algoritmo é o Algoritmo \ref{alg:dbim}. Para outras opções de pacotes para inserir algoritmos, você pode consultar o pacote usado, que é o \textit{algorithm2e}. Nessa versão, o pacote \textit{algorithm2e} foi configurado para usar o idioma português. Mas, se você estiver escrevendo em inglês, é só mudar a opção do pacote para \textit{english}. Isso só muda o título. Os comandos em português são outros, como por exemplo: \verb|\Entrada{}|, \verb|\Saida{}|, \verb|\Se{}|, \verb|\Senao{}|, \verb|\Enqto{}|, entre outros.
 		\begin{algorithm}[!htb]
 			\caption{Distorted Born Iterative Method.}
 			\label{alg:dbim}
@@ -268,6 +268,8 @@
 		\end{algorithm}
 	
 	\chapter{Como inserir definições e outras coisas especiais}
+
+		Nesse modelo, foram adicionados alguns ambientes para facilitar a escrita de definições, teoremas, lemas, corolários, entre outros. Você pode adicionar mais ambientes no arquivo \textit{configuracoes.tex}. Aqui vai alguns exemplos de como usar esses ambientes.
 
 		Um exemplo de definição:
 		\begin{definition}\label{def:3:projection}
@@ -289,7 +291,9 @@
 			\end{enumerate}
 		\end{theorem}
 
-		Um exemplo de código em Python:
+		Note que, se você estiver escrevendo em inglês, você precisará mudar a definição desses ambientes no arquivo \textit{configuracoes.tex}.
+
+		Outro recurso interessante é poder colocar códigos de programação. Nesses casos, você pode usar o ambiente \textit{lstlisting}. Um exemplo de código em Python pode ser visto abaixo. Esse código foi escrito em outro arquivo \textit{.tex} apenas para fins de organização. Como esse apêndice é adicionado no arquivo principal \textit{main.tex} através do comando \verb|\include{}|, então, para adicionarmos o arquivo do código, usamos o comando \verb|\input{}|. 
 
 		\input{postextuais/python_exemplo}
 
