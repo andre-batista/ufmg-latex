@@ -1,0 +1,72 @@
+\begin{lstlisting}[language=Python]
+# Evaluate contourns
+co = measure.find_contours(original, 1.0, fully_connected='high')
+cr = measure.find_contours(recovered, threshold)
+			
+# Converting scale of recovered contourn
+for i in range(len(cr)):
+    cr[i][:, 1] = original.shape[1]*cr[i][:, 1]/recovered.shape[1]
+    cr[i][:, 0] = original.shape[0]*cr[i][:, 0]/recovered.shape[0]
+			
+# Thresholding
+masko = np.zeros(original.shape, dtype=bool)
+maskr = np.zeros(recovered.shape, dtype=bool)
+masko[original > 1] = True
+maskr[recovered >= threshold] = True
+			
+# Evaluate centers
+xo, yo = np.meshgrid(np.arange(0, original.shape[1]),
+                     np.arange(0, original.shape[0]))
+xr, yr = np.meshgrid(np.linspace(0, original.shape[1]-1, 
+                                 recovered.shape[1]),
+                     np.linspace(0, original.shape[0]-1,
+                                 recovered.shape[0]))
+xco = np.sum(masko*xo)/np.sum(masko)
+yco = np.sum(masko*yo)/np.sum(masko)
+xcr = np.sum(maskr*xr)/np.sum(maskr)
+ycr = np.sum(maskr*yr)/np.sum(maskr)
+			
+# Centralization
+for i in range(len(co)):
+    co[i][:, 0] = co[i][:, 0]-yco+original.shape[0]/2
+    co[i][:, 1] = co[i][:, 1]-xco+original.shape[1]/2
+			
+# Centralization
+for i in range(len(cr)):
+    cr[i][:, 0] = cr[i][:, 0]-ycr+original.shape[0]/2
+    cr[i][:, 1] = cr[i][:, 1]-xcr+original.shape[1]/2
+			
+# Verify points
+masko = np.zeros(original.shape, dtype=bool)
+counter = np.zeros(original.shape)
+for i in range(len(co)):
+    maskt = measure.grid_points_in_poly(original.shape, co[i])
+    counter[maskt] += 1
+    masko[np.mod(counter, 2) == 1] = True
+			
+# Verify points
+maskr = np.zeros(original.shape, dtype=bool)
+counter = np.zeros(original.shape)
+for i in range(len(cr)):
+    maskt = measure.grid_points_in_poly(original.shape, cr[i])
+    counter[maskt] += 1
+    maskr[np.mod(counter, 2) == 1] = True
+			
+# Xor operation
+diff = np.logical_xor(masko, maskr)
+			
+# Area of the difference
+zeta_s = np.sum(diff)/np.sum(masko)*100
+			
+# Figure
+fig, axis = plt.subplots(ncols=3, figsize=[3*6.4,4.8])
+fig.subplots_adjust(wspace=.5)
+axis[0].imshow(masko, origin='lower')
+axis[0].set_title('Original')
+axis[1].imshow(maskr, origin='lower')
+axis[1].set_title('Recovered')
+axis[2].imshow(diff, origin='lower')
+axis[2].set_title('Difference')
+			
+plt.show()
+\end{lstlisting}
