@@ -5,7 +5,7 @@
 
 % Suporte a caracteres da língua portuguesa. Se você estiver escrevendo em 
 % inglês, remova essa linha.
-\usepackage[brazil]{babel} 
+\usepackage[brazilian]{babel}
 
 % Inclui a lista de pacotes utilizados. Você pode adicionar novos pacotes aqui 
 % ou dentro do arquivo pacotes.tex.
@@ -93,7 +93,14 @@
     \include{./textuais/conclusao}
 
     % Referências bibliográficas
-    \bibliographystyle{apalike}
+
+    % Use este estilo caso esteja escrevendo em inglês.
+    % \bibliographystyle{apalike}
+
+    % Use este estilo caso esteja escrevendo em português.
+    \bibliographystyle{estiloreferenciaportugues}
+
+    % Arquivos com as referências bibliográficas.
     \bibliography{referencias}
     
     % Apêncice
