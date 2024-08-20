@@ -57,8 +57,16 @@
 	\include{./pretextuais/resumo}
     \include{./pretextuais/abstract}
 
-	% Listas
-    \include{textuais/listas}
+	% Listas: figuras, tabelas e algoritmos. Caso não tenha, comente as linhas
+    % abaixo.
+    \begingroup
+        \pagestyle{empty}
+        \listoffigures
+        \pagestyle{empty}
+        \listoftables
+        \pagestyle{empty}
+        \listofalgorithms
+    \endgroup
 	
     % Abreviações e símbolos
 	\include{./pretextuais/abreviacoes}
@@ -75,7 +83,7 @@
     % de rosto, você contar que a primeira página da introdução é a página 10,
     % então você deve ajustar o contador para 9. 
     \pagenumbering{arabic}
-    \setcounter{page}{10}
+    \setcounter{page}{13}
 
     % Introdução
     \include{./textuais/introducao}
